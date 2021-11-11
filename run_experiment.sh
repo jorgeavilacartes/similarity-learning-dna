@@ -1,3 +1,5 @@
+python3 00-undersample_sequences.py
+python3 00-extract_sequences.py
 python3 01-generate_fcgr.py
 python3 02-train_test_val_split.py
 python3 03-train_model.py

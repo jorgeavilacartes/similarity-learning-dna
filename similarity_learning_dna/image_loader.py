@@ -23,14 +23,12 @@ class ImageLoader:
 
 class InputOutputLoader(ImageLoader):
 
-    def __init__(self, img_height, img_width, order_output_model: List[str]):
+    def __init__(self, img_height, img_width,):
         super().__init__(img_height, img_width)
-        self.order_output_model = order_output_model
-        self.encoder_output = EncoderOutput(order_output_model)
 
     def __call__(self, file_path: Path,):
         "given an image path, return the input-output for the model"
         file_path = str(file_path)
         label = Path(file_path).parent.stem
         img = self.load_img(file_path)
-        return img, self.encoder_output([label])
+        return img, label
