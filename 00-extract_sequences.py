@@ -23,8 +23,9 @@ with open(PATH_FASTA_GISAID) as handle:
         # save sequence if it was selected
         if record.id in set_fasta_id:
             # save sequence in a fasta file "<accession_id>.fasta"
-            accession_id = record.id.split("|")[1]
-            SeqIO.write(record, f"{accession_id}.fasta", "fasta") 
+            filename = record.id.replace("/","_")
+            path_save = FOLDER_FASTA.joinpath(f"{filename}.fasta")
+            SeqIO.write(record, path_save, "fasta") 
             # remove from the set to be saved   
             set_fasta_id.remove(record.id)
         
