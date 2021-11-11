@@ -2,7 +2,7 @@ from pathlib import Path
 import tensorflow as tf
 import tensorflow_addons as tfa
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, Conv2D, Dense, MaxPool2D, Flatten, GlobalAveragePooling2D, Add, Activation, BatchNormalization, ZeroPadding2D
+from tensorflow.keras.layers import Input, Conv2D, Dense, MaxPool2D, Flatten, GlobalAveragePooling2D, Add, Activation, BatchNormalization, ZeroPadding2D, Lambda
 
 # Reference name of model
 MODEL_NAME = str(Path(__file__).resolve().stem)
@@ -92,11 +92,13 @@ def get_model():
     conv5 = identity_block(conv5, [512,512,2048], 3, '5', '3')
 
     avg_pool = GlobalAveragePooling2D()(conv5)
-    embeddings = Flatten()(avg_pool)
-    embeddings = tf.keras.layers.Dense(256, activation=None)(avg_pool), # No activation on final dense layer
-    embeddings = tf.keras.layers.Lambda(lambda x: tf.math.l2_normalize(x, axis=1))(embeddings) # L2 normalize embeddings
 
-    model = Model(inp, embeddings)
+    x = Flatten()(avg_pool)
+    dense = Dense(256, activation=None)(x), # No activation on final dense layer
+    custom_layer = lambda x: tf.math.l2_normalize(x[-1], axis=1)
+    embeddings = Lambda(custom_layer,)(dense) # L2 normalize embeddings
+
+    model = Model(inp, dense)
 
     model.compile(optimizer=tf.keras.optimizers.Adam(),
                 loss=tfa.losses.TripletSemiHardLoss(),

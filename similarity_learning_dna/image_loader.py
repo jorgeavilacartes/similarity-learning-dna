@@ -2,6 +2,12 @@ from pathlib import Path
 from typing import List
 import tensorflow as tf
 from .encoder_output import EncoderOutput
+from parameters import PARAMETERS
+
+# Labels must be numeric values
+CLADES = PARAMETERS["CLADES"]
+CLADES.sort()
+CLADES2NUM = {clade:num for clade,num in zip(CLADES,range(len(CLADES)))}
 
 class ImageLoader:
     """Load Image"""
@@ -31,4 +37,4 @@ class InputOutputLoader(ImageLoader):
         file_path = str(file_path)
         label = Path(file_path).parent.stem
         img = self.load_img(file_path)
-        return img, label
+        return img, CLADES2NUM.get(label)

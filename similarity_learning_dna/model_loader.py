@@ -20,7 +20,7 @@ class ModelLoader:
         # Call class of model to load
         get_model = getattr(
             importlib.import_module(
-                f"supervised_dna.models.{model_name}"
+                f"similarity_learning_dna.models.{model_name}"
             ),
             "get_model")        
         

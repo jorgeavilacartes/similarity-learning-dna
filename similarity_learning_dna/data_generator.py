@@ -13,16 +13,14 @@ class DataGenerator(tf.keras.utils.Sequence):
 
     def __init__(self, 
                 list_paths: List[Union[str, Path]], 
-                order_output_model: List[str],
                 batch_size: int = 8,
                 shuffle: bool = True,
                 kmer: int = 8,
                 ):
-        self.list_paths = list_paths
-        self.order_output_model = order_output_model   
+        self.list_paths = list_paths  
         self.batch_size = batch_size 
         self.shuffle = shuffle
-        self.input_output_loader = InputOutputLoader(2**kmer, 2**kmer, order_output_model)
+        self.input_output_loader = InputOutputLoader(2**kmer, 2**kmer)
         
         # initialize first batch
         self.on_epoch_end()
