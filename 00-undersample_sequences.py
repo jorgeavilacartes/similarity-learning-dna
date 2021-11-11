@@ -13,7 +13,7 @@ CLADES = PARAMETERS["CLADES"]
 SAMPLES_PER_CLADE = PARAMETERS["SAMPLES_PER_CLADE"]
 
 # Load metadata
-COLS = ["Virus name", "Accession ID", "Collection date", "Clade", "Host", "Is complete?"]
+COLS = ["Virus name", "Accession ID", "Collection date", "Submission date","Clade", "Host", "Is complete?"]
 data = pd.read_csv(PATH_METADATA,sep="\t")
 
 # Remove NaN in Clades and not-complete sequences
@@ -29,7 +29,7 @@ data.query(f"`Clade` in {CLADES} and `Host`=='Human'", inplace=True)
 
 ## Randomly select a subset of sequences
 # Generate id of sequences in fasta file: "Virus name|Accession ID|Collection date"
-data["fasta_id"] = data.progress_apply(lambda row: "|".join([row["Virus name"],row["Accession ID"], row["Collection date"]]), axis=1)
+data["fasta_id"] = data.progress_apply(lambda row: "|".join([row["Virus name"],row["Collection date"],row["Submission date"]]), axis=1)
 
 # subsample 
 SampleClade = namedtuple("SampleClade", ["fasta_id","clade"])

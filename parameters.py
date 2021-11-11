@@ -4,10 +4,10 @@ SET PARAMETERS FOR ALL STEPS
 # -- Define parameters
 
 # Undersample sequences
-PATH_METADATA = "/data/GISAID-22-10-2021/metadata_tsv_2021_11_08/metadata.tsv"
+PATH_METADATA = "/data/GISAID/metadata.tsv"
 CLADES = ['S','L','G','V','GR','GH','GV','GK']
 SAMPLES_PER_CLADE = 1600
-PATH_FASTA_GISAID = "/data/GISAID-22-10-2021/sequences.fasta"
+PATH_FASTA_GISAID = "/data/GISAID/sequences.fasta"
 
 # General
 KMER = 8
@@ -24,6 +24,8 @@ PARAMETERS = dict(
     PATH_METADATA = PATH_METADATA,
     CLADES = CLADES,
     SAMPLES_PER_CLADE = SAMPLES_PER_CLADE,
+    PATH_FASTA_GISAID=PATH_FASTA_GISAID,
+    SPECIE = SPECIE,
     FOLDER_FASTA = f"data/{SPECIE}",
     FOLDER_IMG = f"img-{KMER}-mer/{SPECIE}",
     TRAIN_SIZE = TRAIN_SIZE,
