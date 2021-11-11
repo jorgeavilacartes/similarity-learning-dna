@@ -8,6 +8,8 @@ from similarity_learning_dna import (
     DatasetLoader,
 )
 
+print(">> test model <<")
+
 KMER = PARAMETERS["KMER"]
 BATCH_SIZE = 8
 
@@ -35,8 +37,8 @@ results = model.predict(ds_test)
 np.savetxt("vecs.tsv", results, delimiter='\t')
 
 out_m = io.open('meta.tsv', 'w', encoding='utf-8')
-for img, labels in iter(ds_test):
-    [out_m.write(str(label.parent.stem) + "\n") for label in list_test]
+for img, label in iter(ds_test):
+    [out_m.write(str(label) + "\n")]
 out_m.close()
 
 # Evaluate model and save metrics

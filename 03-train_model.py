@@ -7,6 +7,8 @@ from parameters import PARAMETERS
 from similarity_learning_dna.data_generator import DataGenerator
 import tensorflow as tf
 
+print(">> train model <<")
+
 # General parameters
 KMER = PARAMETERS["KMER"]
 

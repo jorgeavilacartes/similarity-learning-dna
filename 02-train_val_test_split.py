@@ -4,6 +4,8 @@ from parameters import PARAMETERS
 from pathlib import Path
 from similarity_learning_dna import DataSelector
 
+print(">> train val test split <<")
+
 # Select all data
 FOLDER_IMG = Path(PARAMETERS["FOLDER_IMG"]) 
 LIST_FASTA   = list(FOLDER_IMG.rglob("*jpg"))

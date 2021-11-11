@@ -4,6 +4,8 @@ from similarity_learning_dna import (
     GenerateFCGR,
 )
 
+print(">> generate fcgr <<")
+
 FOLDER_FASTA = Path(PARAMETERS["FOLDER_FASTA"]) 
 LIST_FASTA   = list(FOLDER_FASTA.rglob("*fas"))
 KMER = PARAMETERS["KMER"] 

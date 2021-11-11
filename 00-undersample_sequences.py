@@ -8,6 +8,8 @@ from parameters import PARAMETERS, SAMPLES_PER_CLADE
 tqdm.pandas()
 random.seed(42)
 
+print(">> Undersample sequences <<")
+
 PATH_METADATA = PARAMETERS["PATH_METADATA"]
 CLADES = PARAMETERS["CLADES"]
 SAMPLES_PER_CLADE = PARAMETERS["SAMPLES_PER_CLADE"]
