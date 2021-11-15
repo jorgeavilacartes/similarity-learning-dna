@@ -5,7 +5,7 @@ import pandas as pd
 from parameters import PARAMETERS
 from similarity_learning_dna import (
     ModelLoader,
-    DatasetLoader,
+    DataGenerator,
 )
 
 print(">> test model <<")
@@ -21,16 +21,13 @@ model  = loader("cnn_{}mers".format(KMER), weights_path="checkpoint/cp.ckpt") # 
 # load list of images for train and validation sets
 with open("datasets.json","r") as f:
     datasets = json.load(f)
-list_test = datasets["val"]
+list_test = datasets["test"]
 
 
-ds_loader = DatasetLoader(batch_size=BATCH_SIZE, 
-                            kmer=KMER, 
-                            order_output_model=["1","2","3","4"],
-                            shuffle=False,
-                            )
-
-ds_test = ds_loader(list_img = list_test)
+ds_test = DataGenerator(
+    list_test,
+    shuffle=True
+)
 
 # Save test embeddings for visualization in projector
 results = model.predict(ds_test)

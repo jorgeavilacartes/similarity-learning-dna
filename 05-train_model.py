@@ -1,10 +1,9 @@
 import json
 from similarity_learning_dna import (
     ModelLoader,
-    DatasetLoader,    
+    DataGenerator,    
 )
 from parameters import PARAMETERS
-from similarity_learning_dna.data_generator import DataGenerator
 import tensorflow as tf
 
 print(">> train model <<")
