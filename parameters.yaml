@@ -1,0 +1,19 @@
+## Undersample sequences
+PATH_METADATA: "/data/GISAID/metadata.tsv"
+CLADES: ['S','L','G','V','GR','GH','GV','GK','GRY','O','GRA']
+SAMPLES_PER_CLADE: 5000
+PATH_FASTA_GISAID: "/data/GISAID/sequences.fasta"
+
+## General
+KMER: 6
+SPECIE: "hCoV-19"
+
+## For training
+TRAIN_SIZE: 0.8 # size for val and test sets = (1-TRAIN_SIZE)/2
+BATCH_SIZE: 16
+EPOCHS: 120
+WEIGHTS: null # weights to load when starting training
+
+# callbacks early stopping
+PATIENTE_EARLY_STOPPING: 20 # stop training after N epochs without improvement
+PATIENTE_REDUCE_LR: 15 # reduce learning rate after N epochs without improvement

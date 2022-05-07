@@ -5,22 +5,24 @@ from pathlib import Path
 import numpy as np
 import tensorflow as tf
 
+from .npy_loader import InputOutputLoader
+
 from .encoder_output import EncoderOutput
-from .image_loader import InputOutputLoader
+from .npy_loader import InputOutputLoader
 
 class DataGenerator(tf.keras.utils.Sequence):
     """Data Generator  for keras from a list of paths to files""" 
 
     def __init__(self, 
                 list_paths: List[Union[str, Path]], 
+                order_output_model: List[str],
                 batch_size: int = 8,
                 shuffle: bool = True,
-                kmer: int = 8,
                 ):
         self.list_paths = list_paths  
         self.batch_size = batch_size 
         self.shuffle = shuffle
-        self.input_output_loader = InputOutputLoader(2**kmer, 2**kmer)
+        self.input_output_loader = InputOutputLoader(order_output_model)
         
         # initialize first batch
         self.on_epoch_end()
@@ -45,7 +47,7 @@ class DataGenerator(tf.keras.utils.Sequence):
         # Generate indexes of the batch
         indexes = self.indexes[index*self.batch_size:(index+1)*self.batch_size]
 
-        # Find list of paths to ecg
+        # Find list of paths
         list_paths_temp = [self.list_paths[k] for k in indexes]
 
         # Generate data
@@ -63,13 +65,13 @@ class DataGenerator(tf.keras.utils.Sequence):
         X_batch = []
         y_batch = []
         for path in list_path_temp: 
-            img, label = self.input_output_loader(path)
-            img = self.preprocessing(img)
-            X_batch.append(np.expand_dims(img,axis=0)) # add to list with batch dims
-            y_batch.append(label)
+            npy, label = self.input_output_loader(path)
+            npy = self.preprocessing(npy)
+            X_batch.append(np.expand_dims(np.expand_dims(npy,axis=0),axis=-1)) # add to list with batch dims
+            y_batch.append(label.index(1.0))
 
         return np.concatenate(X_batch, axis=0), np.array(y_batch)
 
     @staticmethod
-    def preprocessing(img):
-        return img/255.
+    def preprocessing(npy):
+        return npy/npy.max()
