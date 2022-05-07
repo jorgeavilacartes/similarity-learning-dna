@@ -8,7 +8,7 @@ from tensorflow.keras.layers import Input, Conv2D, Dense, MaxPool2D, Flatten, Gl
 MODEL_NAME = str(Path(__file__).resolve().stem)
 
 # config
-k = 8 # (256x256)
+k = 7 # (64x64)
 input_shape = (2**k, 2**k, 1)
 
 def identity_block(inp, filters, kernel_size, block, layer):
@@ -88,18 +88,18 @@ def get_model():
     conv4 = identity_block(conv4, [256,256,1024], 3, '4', '5')
     conv4 = identity_block(conv4, [256,256,1024], 3, '4', '6')
 
-    # conv5 = convolutional_block(conv4, [512,512,2048], 3, '5', '1')
-    # conv5 = identity_block(conv5, [512,512,2048], 3, '5', '2')
-    # conv5 = identity_block(conv5, [512,512,2048], 3, '5', '3')
+    conv5 = convolutional_block(conv4, [512,512,2048], 3, '5', '1')
+    conv5 = identity_block(conv5, [512,512,2048], 3, '5', '2')
+    conv5 = identity_block(conv5, [512,512,2048], 3, '5', '3')
 
-    avg_pool = GlobalAveragePooling2D()(conv4)
+    avg_pool = GlobalAveragePooling2D()(conv5)
 
     x = Flatten()(avg_pool)
     dense = Dense(256, activation=None)(x), # No activation on final dense layer
     custom_layer = lambda x: tf.math.l2_normalize(x[-1], axis=1)
     embeddings = Lambda(custom_layer,)(dense) # L2 normalize embeddings
 
-    model = Model(inp, dense)
+    model = Model(inp, embeddings)
 
     model.compile(optimizer=tf.keras.optimizers.Adam(),
                 loss=tfa.losses.TripletSemiHardLoss()
